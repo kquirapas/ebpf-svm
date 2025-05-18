@@ -2,6 +2,7 @@
 #![allow(rustdoc::missing_crate_level_docs)] // it's an example
 
 use eframe::egui;
+use egui_plot::{Line, Plot, PlotPoints};
 
 fn main() -> eframe::Result {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
@@ -37,20 +38,18 @@ impl Default for MyApp {
 
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        let mut plot_rect = None;
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.heading("My egui Application");
-            ui.horizontal(|ui| {
-                let name_label = ui.label("Your name: ");
-                ui.text_edit_singleline(&mut self.name)
-                    .labelled_by(name_label.id);
-            });
-            ui.add(egui::Slider::new(&mut self.age, 0..=120).text("age"));
-            if ui.button("Increment").clicked() {
-                self.age += 1;
-            }
-            ui.label(format!("Hello '{}', age {}", self.name, self.age));
+            ui.heading("My SVM Profiler");
 
-            ui.image(egui::include_image!("../assets/cuddlyferris.png"));
+            let my_plot = Plot::new("My Plot");
+            // let's create a dummy line in the plot
+            let graph: Vec<[f64; 2]> = vec![[0.0, 1.0], [2.0, 3.0], [3.0, 2.0]];
+            let inner = my_plot.show(ui, |plot_ui| {
+                plot_ui.line(Line::new("curve", PlotPoints::from(graph)));
+            });
+            // Remember the position of the plot
+            plot_rect = Some(inner.response.rect);
         });
     }
 }
