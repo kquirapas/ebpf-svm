@@ -13,6 +13,10 @@ path = "lib.rs"
 
 [dependencies]
 anyhow = "1.0.98"
+# aya = "0.13.1"
 clap = "4.5.38"
+eframe = "0.31.1"
+egui_extras = "0.31.1"
+env_logger = "0.11.8"
 thiserror = "2.0.12"
-tokio = { version = "1.45.0", features = ["rt", "rt-multi-thread"] }
+tokio = { version = "1.45.0", features = ["macros", "rt", "rt-multi-thread"] }
